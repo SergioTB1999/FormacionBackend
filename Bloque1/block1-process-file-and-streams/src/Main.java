@@ -29,32 +29,28 @@ public class Main {
             System.out.println("Elija una opcion: ");
             op = Integer.parseInt(s.nextLine());
             switch (op) {
-                case 1:
-                    for (Person p:
-                         listPeople) {
+                case 1 -> {
+                    for (Person p :
+                            listPeople) {
                         System.out.println(p);
                     }
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     listPeopleFilter = filterAge25(listPeople);
-                    for (Person p:
-                         listPeopleFilter) {
+                    for (Person p :
+                            listPeopleFilter) {
                         System.out.println(p);
                     }
-                case 3:
+                }
+                case 3 -> {
                     listPeopleFilter = filterLetterA(listPeople);
-                    for (Person p:
-                         listPeopleFilter) {
+                    for (Person p :
+                            listPeopleFilter) {
                         System.out.println(p);
                     }
-                case 4:
-                    filterTownMadrid(filterAge25(listPeople));
-                    break;
-                case 5:
-                    filterTownBarcelona(filterAge25(listPeople));
-                    break;
-                default:
-                    String var8 = "Elija una opcion correcta";
+                }
+                case 4 -> filterTownMadrid(filterAge25(listPeople));
+                case 5 -> filterTownBarcelona(filterAge25(listPeople));
             }
         } while(op != 6);
 
@@ -62,23 +58,29 @@ public class Main {
 
     public static List<Person> readCsvAllPeople(String path) {
         List<Person> listPeople = new ArrayList();
-
         try {
             List<String> lines = Files.readAllLines(Path.of(path));
             for (String line : lines) {
-                String[] data = line.split(":");
-
-                // Asegurarse de que la línea tenga al menos un campo no vacío
-                if (data.length >= 1) {
-                    String name = data[0].trim();
-                    String town = data.length >= 2 ? data[1].trim() : "";
-                    int age = data.length >= 3 ? Integer.parseInt(data[2].trim()) : 0;
-
-                    if (name.isEmpty()) {
-                        throw new InvalidLineFormatException("Invalid name format: " + line);
+                int contador = 0;
+                for (int i = 0; i < line.length(); i++) {
+                    if (line.charAt(i) == ':'){
+                        contador++;
                     }
+                }
+                if (contador == 2){
+                    String[] data = line.split(":");
+                    // Asegurarse de que la línea tenga al menos un campo no vacío
+                    if (data.length >= 1) {
+                        String name = data[0].trim();
+                        String town = data.length >= 2 && !data[1].isEmpty() ? data[1].trim() : "unknown";
+                        int age = data.length >= 3 ? Integer.parseInt(data[2].trim()) : 0;
 
-                    listPeople.add(new Person(name, town, age));
+                        if (name.isEmpty()) {
+                            throw new InvalidLineFormatException("Invalid name format: " + line);
+                        }
+
+                        listPeople.add(new Person(name, town, age));
+                    }
                 } else {
                     throw new InvalidLineFormatException("Invalid line format: " + line);
                 }
@@ -95,7 +97,7 @@ public class Main {
         List<Person> listPeopleFilterAge = new ArrayList();
         for (Person p:
              people) {
-            if (p.getAge() < 25){
+            if (p.getAge() < 25 && p.getAge() != 0){
                 listPeopleFilterAge.add(p);
             }
         }
@@ -107,7 +109,7 @@ public class Main {
         List<Person> listPeopleFilterLetterA = new ArrayList();
         for (Person p:
              people) {
-            if (!p.getName().startsWith("A")){
+            if (!p.getName().startsWith("A") && !p.getName().startsWith("Á")){
                 listPeopleFilterLetterA.add(p);
             }
         }
