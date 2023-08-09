@@ -71,18 +71,14 @@ public class Main {
                     String[] data = line.split(":");
                     // Asegurarse de que la línea tenga al menos un campo no vacío
                     if (data.length >= 1) {
-                        String name = data[0].trim();
-                        String town = data.length >= 2 && !data[1].isEmpty() ? data[1].trim() : "unknown";
-                        int age = data.length >= 3 ? Integer.parseInt(data[2].trim()) : 0;
-
-                        if (name.isEmpty()) {
-                            throw new InvalidLineFormatException("Invalid name format: " + line);
-                        }
-
+                        String name = data[0];
+                        if (name.isEmpty()) throw new InvalidLineFormatException("Nombre obligatorio... Linea: " + line);
+                        String town = data.length >= 2 && !data[1].isEmpty() ? data[1] : "unknown";
+                        int age = data.length >= 3 ? Integer.parseInt(data[2]) : 0;
                         listPeople.add(new Person(name, town, age));
                     }
                 } else {
-                    throw new InvalidLineFormatException("Invalid line format: " + line);
+                    throw new InvalidLineFormatException("Formato invalido en la linea...: " + line);
                 }
             }
 
