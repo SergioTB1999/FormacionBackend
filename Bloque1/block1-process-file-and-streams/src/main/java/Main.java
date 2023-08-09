@@ -96,7 +96,7 @@ public class Main {
     public static List<Person> filterAge25(List<Person> people) {
         List<Person> listPeopleFilterAge = new ArrayList();
         for (Person p:
-             people) {
+                people) {
             if (p.getAge() < 25 && p.getAge() != 0){
                 listPeopleFilterAge.add(p);
             }
@@ -108,7 +108,7 @@ public class Main {
     public static List<Person> filterLetterA(List<Person> people) {
         List<Person> listPeopleFilterLetterA = new ArrayList();
         for (Person p:
-             people) {
+                people) {
             if (!p.getName().startsWith("A") && !p.getName().startsWith("Á")){
                 listPeopleFilterLetterA.add(p);
             }
@@ -148,4 +148,4 @@ public class Main {
             super(message);
         }
     }
-    }
+}
