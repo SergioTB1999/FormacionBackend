@@ -115,9 +115,8 @@ public class Main {
 
     public static void filterTownMadrid(List<Person> people) {
         Stream<Person> peopleStream = people.stream();
-        Optional<Person> personFromMadrid = peopleStream.filter((person) -> {
-            return person.getTown().equals("Madrid");
-        }).findFirst();
+        Optional<Person> personFromMadrid = peopleStream.filter((person) ->
+             person.getTown().equals("Madrid")).findFirst();
         /*if (personFromMadrid.isEmpty()) {
             System.out.println("No se ha encontrado con ciudad en Madrid");
         } else {
@@ -132,9 +131,8 @@ public class Main {
 
     public static void filterTownBarcelona(List<Person> people) {
         Stream<Person> peopleStream = people.stream();
-        Optional<Person> personBarcelona = peopleStream.filter((person) -> {
-            return person.getTown().equals("Barcelona");
-        }).findFirst();
+        Optional<Person> personBarcelona = peopleStream.filter((person) ->
+             person.getTown().equals("Barcelona")).findFirst();
         /*if (personBarcelona.isEmpty()) {
             System.out.println("No se encuentra ninguna persona con ciudad en Barcelona");
         } else {
