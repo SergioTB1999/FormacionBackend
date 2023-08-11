@@ -1,0 +1,15 @@
+2023-08-11T09:31:19.884+02:00  INFO 9908 --- [restartedMain] c.e.b.Block5LoggingApplication           : Starting Block5LoggingApplication using Java 17.0.8 with PID 9908 (C:\Users\sergio.tblanca\Documents\SpringBoot\Bloque5\block5-logging\target\classes started by sergio.tblanca in C:\Users\sergio.tblanca\Documents\SpringBoot\Bloque5\block5-logging)
+2023-08-11T09:31:19.887+02:00  INFO 9908 --- [restartedMain] c.e.b.Block5LoggingApplication           : No active profile set, falling back to 1 default profile: "default"
+2023-08-11T09:31:19.975+02:00  INFO 9908 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2023-08-11T09:31:19.976+02:00  INFO 9908 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2023-08-11T09:31:21.088+02:00  INFO 9908 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2023-08-11T09:31:21.097+02:00  INFO 9908 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-08-11T09:31:21.097+02:00  INFO 9908 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.11]
+2023-08-11T09:31:21.148+02:00  INFO 9908 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-08-11T09:31:21.148+02:00  INFO 9908 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1160 ms
+2023-08-11T09:31:21.571+02:00  INFO 9908 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2023-08-11T09:31:21.604+02:00  INFO 9908 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2023-08-11T09:31:21.614+02:00  INFO 9908 --- [restartedMain] c.e.b.Block5LoggingApplication           : Started Block5LoggingApplication in 2.246 seconds (process running for 2.787)
+2023-08-11T09:31:21.616+02:00  INFO 9908 --- [restartedMain] c.e.b.Block5LoggingApplication           : Mensaje a nivel de INFO
+2023-08-11T09:31:21.616+02:00  WARN 9908 --- [restartedMain] c.e.b.Block5LoggingApplication           : Mensaje a nivel de WARNING
+2023-08-11T09:31:21.616+02:00 ERROR 9908 --- [restartedMain] c.e.b.Block5LoggingApplication           : Mensaje de error
