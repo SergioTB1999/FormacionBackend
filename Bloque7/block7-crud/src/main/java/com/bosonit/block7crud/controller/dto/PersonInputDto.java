@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class PersonInputDto {
-    int id;
+    String id;
     String nombre;
     String edad;
     String poblacion;

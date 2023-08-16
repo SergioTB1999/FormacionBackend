@@ -28,13 +28,13 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public void deletePersonById(String id) {
-        personRepository.findById(Integer.parseInt(id)).orElseThrow();
-        personRepository.deleteById(Integer.parseInt(id));
+        personRepository.findById(id).orElseThrow();
+        personRepository.deleteById(id);
     }
 
     @Override
     public PersonOutputDto getPersonById(String id) {
-        return personRepository.findById(Integer.parseInt(id)).orElseThrow().personToPersonOutputDto();
+        return personRepository.findById(id).orElseThrow().personToPersonOutputDto();
     }
 
     @Override

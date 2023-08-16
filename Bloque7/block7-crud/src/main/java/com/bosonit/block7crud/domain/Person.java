@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,15 +18,14 @@ import lombok.NoArgsConstructor;
 
 public class Person {
     @Id
-    @GeneratedValue
-    int id;
+    String id;
     String nombre;
     String edad;
     String poblacion;
 
 
     public Person(PersonInputDto personInputDto){
-        this.id = personInputDto.getId();
+        this.id = generateUniqueId();
         this.nombre = personInputDto.getNombre();
         this.edad = personInputDto.getEdad();
         this.poblacion = personInputDto.getPoblacion();
@@ -37,5 +38,10 @@ public class Person {
                 this.edad,
                 this.poblacion
         );
+    }
+
+    private String generateUniqueId() {
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString().replace("-", "");
     }
 }

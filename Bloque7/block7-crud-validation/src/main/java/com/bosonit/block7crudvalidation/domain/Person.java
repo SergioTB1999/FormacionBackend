@@ -1,0 +1,71 @@
+package com.bosonit.block7crudvalidation.domain;
+
+import com.bosonit.block7crudvalidation.controller.dto.Person.PersonInputDto;
+import com.bosonit.block7crudvalidation.controller.dto.Person.PersonOutputDto;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.Date;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
+public class Person {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    String id_persona;
+    String usuario;
+    String password;
+    String name;
+    String surname;
+    String company_email;
+    String personal_email;
+    String city;
+    boolean activate;
+    Date created_date;
+    String imagen_url;
+    Date termination_date;
+
+    @OneToOne
+    private Student student;
+
+    @OneToOne
+    private Teacher teacher;
+
+
+
+    public Person(PersonInputDto personInputDto){
+        this.usuario = personInputDto.getUsuario();
+        this.password = personInputDto.getPassword();
+        this.name = personInputDto.getName();
+        this.surname = personInputDto.getSurname();
+        this.company_email = personInputDto.getCompany_email();
+        this.personal_email = personInputDto.getPersonal_email();
+        this.city = personInputDto.getCity();
+        this.activate = personInputDto.isActivate();
+        this.created_date = personInputDto.getCreated_date();
+        this.imagen_url = personInputDto.getImagen_url();
+        this.termination_date = personInputDto.getTermination_date();
+    }
+
+    public PersonOutputDto personToPersonOutputDto(){
+        return new PersonOutputDto(
+                this.id_persona,
+                this.usuario,
+                this.password,
+                this.name,
+                this.surname,
+                this.company_email,
+                this.personal_email,
+                this.city,
+                this.activate,
+                this.created_date,
+                this.imagen_url,
+                this.termination_date
+        );
+    }
+
+}
