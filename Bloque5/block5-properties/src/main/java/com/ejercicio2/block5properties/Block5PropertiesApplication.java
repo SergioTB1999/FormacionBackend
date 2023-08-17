@@ -21,8 +21,8 @@ public class Block5PropertiesApplication implements CommandLineRunner {
 	@Value("${new.property:No tiene valor}")
 	private String nombre3;
 
-	/*@Value("${env.MYURL}")
-	private String nombre4;*/
+	@Value("${MYURL}")
+	private String nombre4;
 
 	@Value("${env.MYURL2:NO_tengo_valor}")
 	private String nombre5;
@@ -32,7 +32,7 @@ public class Block5PropertiesApplication implements CommandLineRunner {
 		System.out.println("El valor de greeting es: " + nombre1);
 		System.out.println("El valor de my.number es: " + nombre2);
 		System.out.println("El valor de new.property es: " + nombre3);
-		/*System.out.println("El valor de env.MYURL es: " + nombre4);*/
+		System.out.println("El valor de env.MYURL es: " + nombre4);
 		System.out.println("El valor de env.MYURL2 es: " + nombre5);
 	}
 }
