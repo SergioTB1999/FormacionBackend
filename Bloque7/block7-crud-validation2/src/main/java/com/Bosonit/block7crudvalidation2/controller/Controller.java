@@ -25,12 +25,6 @@ public class Controller {
     @Autowired
     PersonServiceImpl personService;
 
-    @Autowired
-    StudentServiceImpl studentService;
-
-    @Autowired
-    TeacherServiceImpl teacherService;
-
     @ExceptionHandler
     @ResponseStatus
     public CustomError handleUnprocessableEntityException(UnprocessableEntityException ex){

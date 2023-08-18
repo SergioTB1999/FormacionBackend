@@ -35,8 +35,8 @@ public class Student {
     @JoinColumn(name = "id_profesor")
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "student")
-    private Set<Asignatura> asignaturas;
+    @ManyToMany(mappedBy = "students")
+    Set<Asignatura> asignaturas;
 
     public Student(StudentInputDto studentInputDto){
         this.num_hours_week = studentInputDto.getNum_hours_week();

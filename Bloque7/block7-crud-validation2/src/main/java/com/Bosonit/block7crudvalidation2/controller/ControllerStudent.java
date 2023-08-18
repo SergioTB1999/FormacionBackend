@@ -46,16 +46,19 @@ public class ControllerStudent {
 
     @PostMapping("/asignatura")
     public ResponseEntity<String> addAsignatura(@RequestParam String id_student, @RequestParam String id_asignatura){
+            studentService.addStudentToAsignatura(id_student, id_asignatura);
             return ResponseEntity.ok().body("Asignatura con id " + id_asignatura + " añadido con exito al alumno con id " + id_student);
     }
 
     @PostMapping("/asignarAsignaturas/{id}")
     public ResponseEntity<String> asignarAsignaturas(@PathVariable String id, @RequestParam List<String> id_asignaturas){
+            studentService.asignarAsignaturasEstudiante(id, id_asignaturas);
             return ResponseEntity.ok().body("Asignaturas asignadas al estudiante con ID: " + id);
     }
 
     @PostMapping("/desasignarAsignaturas/{id}")
     public ResponseEntity<String> desasignarAsignaturas(@PathVariable String id, @RequestParam List<String> id_asignaturas){
+            studentService.desasignarAsignaturasEstudiante(id, id_asignaturas);
             return ResponseEntity.ok().body("Asignaturas desasignadas al estudiantes con ID: " + id);
     }
 

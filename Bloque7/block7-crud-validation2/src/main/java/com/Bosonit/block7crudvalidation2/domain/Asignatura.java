@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -26,9 +27,8 @@ public class Asignatura {
     Date initialDate;
     Date finishDate;
 
-    @ManyToOne
-    @JoinColumn(name = "id_student")
-    private Student student;
+    @ManyToMany
+    Set<Student> students;
 
     public Asignatura(AsignaturaInputDto subjectInputDto){
         this.asignatura = subjectInputDto.getAsignatura();
@@ -38,10 +38,8 @@ public class Asignatura {
     }
 
     public AsignaturaOutputDto subjectToSubjectOutputDto(){
-        String id_student = this.student != null ? this.student.id_student : null;
         return new AsignaturaOutputDto(
                 this.id_asignatura,
-                id_student,
                 this.asignatura,
                 this.comment,
                 this.initialDate,

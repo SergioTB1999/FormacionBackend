@@ -76,11 +76,8 @@ public class StudentServiceImpl implements StudentService {
                 () -> new EntityNotFoundException("No se ha encontrado la ID de la asignatura")
         );
 
-        asignatura.setStudent(student);
         student.getAsignaturas().add(asignatura);
-
         studentRepository.save(student);
-        asignaturaRepository.save(asignatura);
     }
 
     @Override
@@ -101,15 +98,13 @@ public class StudentServiceImpl implements StudentService {
 
         List<Asignatura> asignaturas = asignaturaRepository.findAllById(id_asignatura);
 
-        student.getAsignaturas().addAll(asignaturas);
-
-        for (Asignatura a:
-                asignaturas) {
-            a.setStudent(student);
-            asignaturaRepository.save(a);
+        for (Asignatura asignatura : asignaturas) {
+            asignatura.getStudents().add(student);
         }
 
-        studentRepository.save(student);
+
+        asignaturaRepository.saveAll(asignaturas);
+
     }
 
     @Override
@@ -120,15 +115,11 @@ public class StudentServiceImpl implements StudentService {
 
         List<Asignatura> asignaturas = asignaturaRepository.findAllById(id_asignatura);
 
-        student.getAsignaturas().removeAll(asignaturas);
-
-        for (Asignatura a:
-                asignaturas) {
-            a.setStudent(null);
-            asignaturaRepository.save(a);
+        for (Asignatura asignatura : asignaturas) {
+            asignatura.getStudents().remove(student);
         }
 
-        studentRepository.save(student);
+        asignaturaRepository.saveAll(asignaturas);
 
     }
 
