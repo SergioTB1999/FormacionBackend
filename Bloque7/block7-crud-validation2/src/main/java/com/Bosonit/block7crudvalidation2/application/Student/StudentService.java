@@ -13,9 +13,6 @@ public interface StudentService {
 
     StudentFullOutputDto addStudent(StudentInputDto studentInputDto);
 
-    StudentFullOutputDto getStudentByIdFull(String id);
-
-    StudentSimpleOutputDto getStudentByIdSimple(String id);
 
     List<StudentSimpleOutputDto> getAllStudents();
 
@@ -28,4 +25,6 @@ public interface StudentService {
     void asignarAsignaturasEstudiante(String id_student, List<String> id_asignatura);
 
     void desasignarAsignaturasEstudiante(String id_student, List<String> id_asignatura);
+
+    Object devuelveAlu(String id, String parametro);
 }

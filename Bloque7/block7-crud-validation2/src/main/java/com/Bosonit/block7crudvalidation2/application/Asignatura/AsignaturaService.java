@@ -14,4 +14,5 @@ public interface AsignaturaService {
     List<AsignaturaOutputDto> getAllAsignaturas();
 
     AsignaturaOutputDto updateAsignatura(AsignaturaInputDto asignaturaInputDto);
+
 }

@@ -23,7 +23,9 @@ public class AsignaturaServiceImpl implements AsignaturaService{
 
     @Override
     public AsignaturaOutputDto getAsignaturaById(String id) {
-        return asignaturaRepository.findById(id).orElseThrow().subjectToSubjectOutputDto();
+        return asignaturaRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID")
+        ).subjectToSubjectOutputDto();
     }
 
     @Override

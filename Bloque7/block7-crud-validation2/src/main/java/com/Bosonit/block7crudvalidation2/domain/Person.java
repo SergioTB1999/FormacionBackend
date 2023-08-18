@@ -22,6 +22,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id_persona;
+    @Column(name = "Usuario", nullable = false)
     String usuario;
     String password;
     String name;

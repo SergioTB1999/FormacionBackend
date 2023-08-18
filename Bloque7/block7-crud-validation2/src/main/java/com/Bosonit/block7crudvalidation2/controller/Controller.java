@@ -7,12 +7,15 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonInputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonStudentOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonTeacherOutputDto;
+import com.Bosonit.block7crudvalidation2.errors.CustomError;
+import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
 import com.Bosonit.block7crudvalidation2.errors.UnprocessableEntityException;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/persona")
@@ -28,33 +31,28 @@ public class Controller {
     @Autowired
     TeacherServiceImpl teacherService;
 
+    @ExceptionHandler
+    @ResponseStatus
+    public CustomError handleUnprocessableEntityException(UnprocessableEntityException ex){
+        return new CustomError(new Date(), HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus
+    public CustomError handleEntityNotFoundException (EntityNotFoundException ex){
+        return new CustomError(new Date(), HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
+    }
+
     @PostMapping
-    public ResponseEntity<PersonOutputDto> addPerson(@RequestBody PersonInputDto person) {
-        if (person.getUsuario() == null) throw new UnprocessableEntityException("El usuario es obligatorio");
-        if (person.getUsuario().length() > 10) throw new EntityNotFoundException("El usuario no puede tener mas de 10 caracteres");
+    public ResponseEntity<?> addPerson(@RequestBody PersonInputDto person) {
         return ResponseEntity.status(HttpStatus.CREATED).body(personService.addPerson(person));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPersonById(@PathVariable String id, @RequestParam(defaultValue = "simple", name = "outputType") String parametros) {
-        PersonStudentOutputDto personStudentOutputDto = personService.findePersonStudentById(id);
-        PersonTeacherOutputDto personTeacherOutputDto = personService.findPersonTeacherById(id);
-
-        if (personStudentOutputDto != null){
-            return switch (parametros) {
-                case "simple" -> ResponseEntity.ok().body(personService.findPersonById(id));
-                case "full" -> ResponseEntity.ok().body(personService.findePersonStudentById(id));
-                default -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            };
-        } else if (personTeacherOutputDto != null){
-            return switch (parametros) {
-                case "simple" -> ResponseEntity.ok().body(personService.findPersonById(id));
-                case "full" -> ResponseEntity.ok().body(personService.findPersonTeacherById(id));
-                default -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-            };
-        } else {
-            return ResponseEntity.ok().body(personService.findPersonById(id));
-        }
+    public ResponseEntity<?> getPersonById(
+            @PathVariable String id,
+            @RequestParam(defaultValue = "simple", name = "outputType") String param){
+        return ResponseEntity.ok().body(personService.getPerson(id, param));
     }
 
     @GetMapping()
@@ -64,22 +62,12 @@ public class Controller {
 
     @PutMapping()
     public ResponseEntity<PersonOutputDto> updatePerson(@RequestBody PersonInputDto personInputDto){
-        try{
-            personService.findPersonById(personInputDto.getId_persona());
             return ResponseEntity.ok().body(personService.updatePerson(personInputDto));
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePerson(@PathVariable String id){
-        try{
-            personService.deletePersonById(id);
             return ResponseEntity.ok().body("La persona con el ID " + id + " se ha borrado correctamente");
-        } catch (Exception e){
-            return ResponseEntity.notFound().build();
-        }
     }
 
 }

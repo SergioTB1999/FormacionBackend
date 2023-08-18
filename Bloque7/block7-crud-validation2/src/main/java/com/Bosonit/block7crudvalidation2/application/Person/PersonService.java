@@ -12,10 +12,6 @@ public interface PersonService {
 
     Iterable<PersonOutputDto> findPersonByName(String name);
 
-    PersonTeacherOutputDto findPersonTeacherById(String id);
-
-    PersonStudentOutputDto findePersonStudentById(String id);
-
     PersonOutputDto findPersonById(String id);
 
     Iterable<PersonOutputDto> getAllPersons();
@@ -23,6 +19,8 @@ public interface PersonService {
     PersonOutputDto updatePerson(PersonInputDto personInputDto);
 
     void deletePersonById(String id);
+
+    Object getPerson(String id, String param);
 
 
 

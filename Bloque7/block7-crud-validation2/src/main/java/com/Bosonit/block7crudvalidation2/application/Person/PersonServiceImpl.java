@@ -6,6 +6,7 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonStudentOutp
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonTeacherOutputDto;
 import com.Bosonit.block7crudvalidation2.domain.Person;
 import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
+import com.Bosonit.block7crudvalidation2.errors.UnprocessableEntityException;
 import com.Bosonit.block7crudvalidation2.repository.PersonRepository;
 import com.Bosonit.block7crudvalidation2.repository.StudentRepository;
 import com.Bosonit.block7crudvalidation2.repository.TeacherRepository;
@@ -26,6 +27,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonOutputDto addPerson(PersonInputDto person){
+        if (person.getUsuario() == null) throw new UnprocessableEntityException("Usuario no puede ser nulo");
+        if (person.getUsuario().length() > 10) throw new UnprocessableEntityException("Longitud de usuario no puede ser mayor a 10");
         return personRepository.save(new Person(person)).personToPersonOutputDto();
     }
 
@@ -38,23 +41,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public PersonTeacherOutputDto findPersonTeacherById(String id) {
-        Person person = personRepository.findById(id).orElseThrow();
-
-        if (person.getTeacher() != null) return person.personTeacherToPersonTeacherOutputDto();
-        else return null;
-    }
-
-    @Override
-    public PersonStudentOutputDto findePersonStudentById(String id) {
-        Person person = personRepository.findById(id).orElseThrow();
-        if (person.getStudent() != null) return person.personStudentToPersonStudentOutputDto();
-        else return null;
-    }
-
-    @Override
     public PersonOutputDto findPersonById(String id) {
-        return personRepository.findById(id).orElseThrow().personToPersonOutputDto();
+        return personRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID de la persona")
+        ).personToPersonOutputDto();
     }
 
 
@@ -68,7 +58,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonOutputDto updatePerson(PersonInputDto personInputDto) {
-        Person person = personRepository.findById(personInputDto.getId_persona()).orElseThrow();
+        Person person = personRepository.findById(personInputDto.getId_persona()).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID de la persona")
+        );
 
         person.setUsuario(personInputDto.getUsuario());
         person.setPassword(personInputDto.getPassword());
@@ -90,7 +82,30 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deletePersonById(String id) {
         personRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(
+                        () -> new EntityNotFoundException("No se encuentra la ID de la persona")
+                );
         personRepository.deleteById(id);
+    }
+
+    @Override
+    public Object getPerson(String id, String param) {
+        Person person = personRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID de la persona")
+        );
+
+        switch (param) {
+            case "simple" -> {
+                return person.personToPersonOutputDto();
+            }
+            case "full" -> {
+                if (person.getTeacher() != null) return person.personTeacherToPersonTeacherOutputDto();
+                if (person.getStudent() != null) return person.personStudentToPersonStudentOutputDto();
+                return new UnprocessableEntityException("La persona no es ni profesor ni estudiante");
+            }
+            default -> {
+                return new UnprocessableEntityException("Los parametros son incorrectos");
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.Bosonit.block7crudvalidation2.domain.Asignatura;
 import com.Bosonit.block7crudvalidation2.domain.Person;
 import com.Bosonit.block7crudvalidation2.domain.Student;
 import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
+import com.Bosonit.block7crudvalidation2.errors.UnprocessableEntityException;
 import com.Bosonit.block7crudvalidation2.repository.AsignaturaRepository;
 import com.Bosonit.block7crudvalidation2.repository.PersonRepository;
 import com.Bosonit.block7crudvalidation2.repository.StudentRepository;
@@ -33,7 +34,9 @@ public class StudentServiceImpl implements StudentService {
     public StudentFullOutputDto addStudent(StudentInputDto studentInputDto) {
         Person person = personRepository
                 .findById(studentInputDto.getId_persona())
-                .orElseThrow();
+                .orElseThrow(
+                        () -> new EntityNotFoundException("No se encuentra la ID del alumno")
+                );
         Student student = new Student(studentInputDto);
 
         person.setStudent(student);
@@ -42,15 +45,6 @@ public class StudentServiceImpl implements StudentService {
         return studentRepository.save(student).studentToStudentOutputDto();
     }
 
-    @Override
-    public StudentFullOutputDto getStudentByIdFull(String id) {
-        return studentRepository.findById(id).orElseThrow().studentToStudentOutputDto();
-    }
-
-    @Override
-    public StudentSimpleOutputDto getStudentByIdSimple(String id) {
-        return studentRepository.findById(id).orElseThrow().studentToStudentSimpleOutputDto();
-    }
 
     @Override
     public List<StudentSimpleOutputDto> getAllStudents() {
@@ -59,7 +53,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public StudentSimpleOutputDto updateStundent(StudentInputDto studentInputDto) {
-        Student student = studentRepository.findById(studentInputDto.getId_student()).orElseThrow();
+        Student student = studentRepository.findById(studentInputDto.getId_student()).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID del alumno")
+        );
 
         student.setBranch(studentInputDto.getBranch());
         student.setComments(studentInputDto.getComments());
@@ -72,9 +68,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void addStudentToAsignatura(String id_student, String id_asignatura) {
-        Student student = studentRepository.findById(id_student).orElseThrow();
+        Student student = studentRepository.findById(id_student).orElseThrow(
+                () -> new EntityNotFoundException("No se ha encontrado la ID del alumno")
+        );
 
-        Asignatura asignatura = asignaturaRepository.findById(id_asignatura).orElseThrow();
+        Asignatura asignatura = asignaturaRepository.findById(id_asignatura).orElseThrow(
+                () -> new EntityNotFoundException("No se ha encontrado la ID de la asignatura")
+        );
 
         asignatura.setStudent(student);
         student.getAsignaturas().add(asignatura);
@@ -95,7 +95,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void asignarAsignaturasEstudiante(String id_student, List<String> id_asignatura) {
-        Student student = studentRepository.findById(id_student).orElseThrow();
+        Student student = studentRepository.findById(id_student).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID del alumno")
+        );
 
         List<Asignatura> asignaturas = asignaturaRepository.findAllById(id_asignatura);
 
@@ -112,7 +114,9 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void desasignarAsignaturasEstudiante(String id_student, List<String> id_asignatura) {
-        Student student = studentRepository.findById(id_student).orElseThrow();
+        Student student = studentRepository.findById(id_student).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID del alumno")
+        );
 
         List<Asignatura> asignaturas = asignaturaRepository.findAllById(id_asignatura);
 
@@ -126,5 +130,21 @@ public class StudentServiceImpl implements StudentService {
 
         studentRepository.save(student);
 
+    }
+
+    @Override
+    public Object devuelveAlu(String id, String parametro) {
+            switch (parametro){
+                case "simple":
+                    return studentRepository.findById(id).orElseThrow(
+                            () -> new EntityNotFoundException("No se encuentra la ID del alumno")
+                    ).studentToStudentSimpleOutputDto();
+                case "full":
+                    return studentRepository.findById(id).orElseThrow(
+                            () -> new EntityNotFoundException("No se encuentra la ID del alumno")
+                    ).studentToStudentOutputDto();
+                default:
+                    return new UnprocessableEntityException("Los parametros son incorrectos");
+            }
     }
 }

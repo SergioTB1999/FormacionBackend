@@ -5,6 +5,7 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Teacher.TeacherOutputDto
 import com.Bosonit.block7crudvalidation2.domain.Person;
 import com.Bosonit.block7crudvalidation2.domain.Student;
 import com.Bosonit.block7crudvalidation2.domain.Teacher;
+import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
 import com.Bosonit.block7crudvalidation2.repository.PersonRepository;
 import com.Bosonit.block7crudvalidation2.repository.StudentRepository;
 import com.Bosonit.block7crudvalidation2.repository.TeacherRepository;
@@ -27,7 +28,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherOutputDto addTeacher(TeacherInputDto teacherInputDto) {
-        Person person = personRepository.findById(teacherInputDto.getId_persona()).orElseThrow();
+        Person person = personRepository.findById(teacherInputDto.getId_persona()).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID de persona")
+        );
         Teacher teacher = new Teacher(teacherInputDto);
 
         person.setTeacher(teacher);
@@ -39,7 +42,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherOutputDto getTeacherById(String id) {
-        return teacherRepository.findById(id).orElseThrow().teacherToTeacherOutputDto();
+        return teacherRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID")
+        ).teacherToTeacherOutputDto();
     }
 
     @Override
@@ -49,7 +54,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public TeacherOutputDto updateTeacher(TeacherInputDto teacherInputDto) {
-        Teacher teacher = teacherRepository.findById(teacherInputDto.getId_profesor()).orElseThrow();
+        Teacher teacher = teacherRepository.findById(teacherInputDto.getId_profesor()).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID")
+        );
 
         teacher.setBranch(teacherInputDto.getBranch());
         teacher.setComments(teacherInputDto.getComments());
@@ -61,8 +68,12 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public void addStudentToTeacher(String id_student, String id_profesor) {
-        Student student = studentRepository.findById(id_student).orElseThrow();
-        Teacher teacher = teacherRepository.findById(id_profesor).orElseThrow();
+        Student student = studentRepository.findById(id_student).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID del estudiante")
+        );
+        Teacher teacher = teacherRepository.findById(id_profesor).orElseThrow(
+                () -> new EntityNotFoundException("No se encuentra la ID del profesor")
+        );
 
         student.setTeacher(teacher);
         teacher.getStudents().add(student);
