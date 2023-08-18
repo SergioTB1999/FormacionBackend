@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 public class StudentSimpleOutputDto {
 
     String id_student;
+    String id_persona;
     int num_hours_week;
     String comments;
+    String id_profesor;
     String branch;
 }

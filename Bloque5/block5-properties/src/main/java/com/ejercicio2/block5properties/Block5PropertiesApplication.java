@@ -24,7 +24,7 @@ public class Block5PropertiesApplication implements CommandLineRunner {
 	@Value("${MYURL}")
 	private String nombre4;
 
-	@Value("${env.MYURL2:NO_tengo_valor}")
+	@Value("${MYURL2:NO_tengo_valor}")
 	private String nombre5;
 
 	@Override

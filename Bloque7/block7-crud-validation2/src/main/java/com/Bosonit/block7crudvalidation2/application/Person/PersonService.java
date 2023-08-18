@@ -20,7 +20,10 @@ public interface PersonService {
 
     Iterable<PersonOutputDto> getAllPersons();
 
-
     PersonOutputDto updatePerson(PersonInputDto personInputDto);
+
+    void deletePersonById(String id);
+
+
 
 }

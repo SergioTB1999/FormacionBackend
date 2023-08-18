@@ -38,8 +38,10 @@ public class Asignatura {
     }
 
     public AsignaturaOutputDto subjectToSubjectOutputDto(){
+        String id_student = this.student != null ? this.student.id_student : null;
         return new AsignaturaOutputDto(
                 this.id_asignatura,
+                id_student,
                 this.asignatura,
                 this.comment,
                 this.initialDate,

@@ -5,6 +5,7 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonStudentOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonTeacherOutputDto;
 import com.Bosonit.block7crudvalidation2.domain.Person;
+import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
 import com.Bosonit.block7crudvalidation2.repository.PersonRepository;
 import com.Bosonit.block7crudvalidation2.repository.StudentRepository;
 import com.Bosonit.block7crudvalidation2.repository.TeacherRepository;
@@ -84,5 +85,12 @@ public class PersonServiceImpl implements PersonService {
         personRepository.save(person);
 
         return person.personToPersonOutputDto();
+    }
+
+    @Override
+    public void deletePersonById(String id) {
+        personRepository.findById(id)
+                .orElseThrow();
+        personRepository.deleteById(id);
     }
 }

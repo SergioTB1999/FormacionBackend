@@ -13,6 +13,7 @@ import java.util.Date;
 public class AsignaturaOutputDto {
 
     String id_asignatura;
+    String id_student;
     String asignatura;
     String comment;
     Date initialDate;

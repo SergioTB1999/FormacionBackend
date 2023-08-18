@@ -66,17 +66,14 @@ public class Student {
     }
 
     public StudentSimpleOutputDto studentToStudentSimpleOutputDto(){
+        String teacherId = this.teacher != null ? this.teacher.getId_profesor() : null;
         return new StudentSimpleOutputDto(
                 this.id_student,
+                this.person.id_persona,
                 this.num_hours_week,
                 this.comments,
+                teacherId,
                 this.branch
         );
     }
-
-    private String generateUniqueId() {
-        UUID uuid = UUID.randomUUID();
-        return uuid.toString().replace("-", "");
-    }
-
 }

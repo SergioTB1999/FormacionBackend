@@ -39,6 +39,7 @@ public class Teacher {
     public TeacherOutputDto teacherToTeacherOutputDto(){
         return new TeacherOutputDto(
                 this.id_profesor,
+                this.person.id_persona,
                 this.comments,
                 this.branch
         );

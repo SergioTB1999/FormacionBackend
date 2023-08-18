@@ -53,7 +53,7 @@ public class Controller {
                 default -> ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             };
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok().body(personService.findPersonById(id));
         }
     }
 
@@ -67,6 +67,16 @@ public class Controller {
         try{
             personService.findPersonById(personInputDto.getId_persona());
             return ResponseEntity.ok().body(personService.updatePerson(personInputDto));
+        } catch (Exception e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deletePerson(@PathVariable String id){
+        try{
+            personService.deletePersonById(id);
+            return ResponseEntity.ok().body("La persona con el ID " + id + " se ha borrado correctamente");
         } catch (Exception e){
             return ResponseEntity.notFound().build();
         }

@@ -30,4 +30,14 @@ public class ControllerAsignatura {
         }
     }
 
+    @GetMapping()
+    public Iterable<AsignaturaOutputDto> getAllAsignaturas(){
+        return asignaturaService.getAllAsignaturas();
+    }
+
+    @PutMapping()
+    public ResponseEntity<AsignaturaOutputDto> updateAsignatura(@RequestBody AsignaturaInputDto asignaturaInputDto){
+        return ResponseEntity.ok().body(asignaturaService.updateAsignatura(asignaturaInputDto));
+    }
+
 }

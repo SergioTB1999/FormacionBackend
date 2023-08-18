@@ -14,6 +14,7 @@ import java.util.Date;
 public class TeacherOutputDto {
 
     String id_profesor;
+    String id_persona;
     String comments;
     String branch;
 }
