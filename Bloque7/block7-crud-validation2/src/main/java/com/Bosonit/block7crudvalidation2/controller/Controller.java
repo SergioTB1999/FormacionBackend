@@ -1,5 +1,6 @@
 package com.Bosonit.block7crudvalidation2.controller;
 
+import com.Bosonit.block7crudvalidation2.Feign.TeacherFeignClient;
 import com.Bosonit.block7crudvalidation2.application.Person.PersonServiceImpl;
 import com.Bosonit.block7crudvalidation2.application.Student.StudentServiceImpl;
 import com.Bosonit.block7crudvalidation2.application.Teacher.TeacherServiceImpl;
@@ -7,6 +8,7 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonInputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonStudentOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonTeacherOutputDto;
+import com.Bosonit.block7crudvalidation2.controller.dto.Teacher.TeacherOutputDto;
 import com.Bosonit.block7crudvalidation2.errors.CustomError;
 import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
 import com.Bosonit.block7crudvalidation2.errors.UnprocessableEntityException;
@@ -24,6 +26,9 @@ public class Controller {
 
     @Autowired
     PersonServiceImpl personService;
+
+    @Autowired
+    TeacherFeignClient teacherFeignClient;
 
     @ExceptionHandler
     @ResponseStatus
@@ -47,6 +52,19 @@ public class Controller {
             @PathVariable String id,
             @RequestParam(defaultValue = "simple", name = "outputType") String param){
         return ResponseEntity.ok().body(personService.getPerson(id, param));
+    }
+
+    @GetMapping("/profesor/{id}")
+    public ResponseEntity<TeacherOutputDto> getTeacherById(
+            @PathVariable String id){
+        try{
+            TeacherOutputDto teacherOutputDto = teacherFeignClient.getProfesorById(id);
+
+            if (teacherOutputDto != null) return ResponseEntity.ok().body(teacherOutputDto);
+            else throw new EntityNotFoundException("No se encuentra al profesor");
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @GetMapping()
