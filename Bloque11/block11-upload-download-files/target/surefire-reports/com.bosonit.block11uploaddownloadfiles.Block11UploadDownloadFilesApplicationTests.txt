@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.bosonit.block11uploaddownloadfiles.Block11UploadDownloadFilesApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.009 s - in com.bosonit.block11uploaddownloadfiles.Block11UploadDownloadFilesApplicationTests
