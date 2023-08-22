@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class ControllerCiudad1 {
 
-    private final CiudadService ciudadService;
+    @Autowired
+     CiudadService ciudadService;
 
     @Autowired
     public ControllerCiudad1(CiudadService ciudadService) {

@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class Controller2 {
 
 
-    private final Controller1 controller1;
+    @Autowired
+    Controller1 controller1;
 
 
     @Autowired

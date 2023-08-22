@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/controlador1")
 public class Controller1 {
 
-    private final PersonService personService;
+    @Autowired
+    PersonService personService;
 
     @Autowired
     public Controller1(PersonService personService){
