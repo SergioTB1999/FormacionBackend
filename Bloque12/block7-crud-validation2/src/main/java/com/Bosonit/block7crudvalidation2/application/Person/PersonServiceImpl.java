@@ -12,6 +12,8 @@ import com.Bosonit.block7crudvalidation2.repository.StudentRepository;
 import com.Bosonit.block7crudvalidation2.repository.TeacherRepository;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -55,10 +57,9 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public Iterable<PersonOutputDto> getAllPersons() {
-        return personRepository.findAll()
-                .stream()
-                .map(Person::personToPersonOutputDto).toList();
+    public Page<PersonOutputDto> getAllPersons(PageRequest pageRequest) {
+        return personRepository.findAll(pageRequest)
+                .map(Person::personToPersonOutputDto);
     }
 
     @Override
@@ -70,13 +71,13 @@ public class PersonServiceImpl implements PersonService {
             if (name != null) predicates.add(criteriaBuilder.like(root.get("name"), "%" + name + "%"));
             if (surname != null) predicates.add(criteriaBuilder.like(root.get("surname"), "%" + surname + "%"));
             if (createdDateFrom != null) predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("created_date"), createdDateFrom));
-            if (createdDateTo != null) predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("ceated_date"), createdDateTo));
+            if (createdDateTo != null) predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("created_date"), createdDateTo));
 
             criteriaQuery.where(predicates.toArray(new Predicate[0]));
-
-            if (orderBy.equals("user")) criteriaQuery.orderBy(criteriaBuilder.asc(root.get("usuario")));
-            else if (orderBy.equals("name")) criteriaQuery.orderBy(criteriaBuilder.asc(root.get("name")));
-
+            if (orderBy != null){
+                if (orderBy.equals("user")) criteriaQuery.orderBy(criteriaBuilder.asc(root.get("usuario")));
+                else if (orderBy.equals("name")) criteriaQuery.orderBy(criteriaBuilder.asc(root.get("name")));
+            }
             return criteriaQuery.getRestriction();
         }).stream().map(Person::personToPersonOutputDto).toList();
     }

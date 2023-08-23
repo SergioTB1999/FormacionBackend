@@ -9,14 +9,19 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonStudentOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonTeacherOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Teacher.TeacherOutputDto;
+import com.Bosonit.block7crudvalidation2.domain.Person;
 import com.Bosonit.block7crudvalidation2.errors.CustomError;
 import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
 import com.Bosonit.block7crudvalidation2.errors.UnprocessableEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @RestController
@@ -68,11 +73,23 @@ public class Controller {
     }
 
     @GetMapping("/personFilter")
+    public Iterable<PersonOutputDto> getPersonsByFilter(@RequestParam(required = false) String user,
+                                                    @RequestParam(required = false) String name,
+                                                    @RequestParam(required = false) String surname,
+                                                    @RequestParam(required = false) String createdDateFrom,
+                                                    @RequestParam(required = false) String createdDateTo,
+                                                    @RequestParam(required = false) String orderBy) throws ParseException {
+            Date parseCreatedDateFrom = parseDate(createdDateFrom);
+            Date parseCreatedDateTo = parseDate(createdDateTo);
+
+        return personService.getAllPersonsFilter(user,name,surname,parseCreatedDateFrom,parseCreatedDateTo,orderBy);
+    }
 
 
     @GetMapping()
-    public Iterable<PersonOutputDto> getPersons(){
-        return personService.getAllPersons();
+    public Page<PersonOutputDto> getPersons(@RequestParam (defaultValue = "1", required = true) int pageNumber,
+                                            @RequestParam (defaultValue = "10") int pageSize){
+        return personService.getAllPersons(PageRequest.of(pageNumber - 1, pageSize));
     }
 
     @PutMapping()
@@ -83,6 +100,17 @@ public class Controller {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePerson(@PathVariable String id){
             return ResponseEntity.ok().body("La persona con el ID " + id + " se ha borrado correctamente");
+    }
+
+    private Date parseDate(String dateString) {
+        if (dateString != null) {
+            try {
+                return new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

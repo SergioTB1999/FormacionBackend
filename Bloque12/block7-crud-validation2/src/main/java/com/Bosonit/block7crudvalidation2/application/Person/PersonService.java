@@ -4,6 +4,7 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonInputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonStudentOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonTeacherOutputDto;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public interface PersonService {
 
     PersonOutputDto findPersonById(String id);
 
-    Iterable<PersonOutputDto> getAllPersons();
+    Iterable<PersonOutputDto> getAllPersons(PageRequest pageRequest);
 
     Iterable<PersonOutputDto> getAllPersonsFilter(String user, String name, String surname, Date createdDateFrom, Date createdDateTo, String orderBy);
 
