@@ -139,6 +139,52 @@ public class TeacherServiceImplTest {
 
     }
 
+    @Test
+    public void testAddTeacherThrowsEntityNotFoundException() {
+        String invalidId = "invalid_id";
+        TeacherInputDto teacherInputDto = new TeacherInputDto();
+        teacherInputDto.setId_persona(invalidId);
+
+        when(personRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            teacherService.addTeacher(teacherInputDto);
+        });
+
+        assertEquals("No se encuentra la ID de persona", exception.getMessage());
+    }
+
+    @Test
+    public void testGetTeacherByIdThrowsEntityNotFoundException() {
+        String invalidId = "invalid_id";
+
+        when(teacherRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            teacherService.getTeacherById(invalidId);
+        });
+
+        assertEquals("No se encuentra la ID", exception.getMessage());
+    }
+
+    @Test
+    public void testUpdateTeacherThrowsEntityNotFoundException() {
+        String invalidId = "invalid_id";
+
+        TeacherInputDto teacherInputDto = new TeacherInputDto();
+        teacherInputDto.setId_profesor(invalidId);
+
+        when(teacherRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
+            teacherService.updateTeacher(teacherInputDto);
+        });
+
+        assertEquals("No se encuentra la ID", exception.getMessage());
+    }
+
+
+
 
 
 }

@@ -9,6 +9,7 @@ import com.Bosonit.block7crudvalidation2.domain.Asignatura;
 import com.Bosonit.block7crudvalidation2.domain.Person;
 import com.Bosonit.block7crudvalidation2.domain.Student;
 import com.Bosonit.block7crudvalidation2.errors.EntityNotFoundException;
+import com.Bosonit.block7crudvalidation2.errors.UnprocessableEntityException;
 import com.Bosonit.block7crudvalidation2.repository.AsignaturaRepository;
 import com.Bosonit.block7crudvalidation2.repository.PersonRepository;
 import com.Bosonit.block7crudvalidation2.repository.StudentRepository;
@@ -265,6 +266,105 @@ class StudentServiceTest {
         assertEquals(2, result.getNum_hours_week());
         assertEquals("aaaaa", result.getBranch());
     }
+
+    @Test
+    public void testAddStudentThrowsEntityNotFoundException() {
+        StudentInputDto studentInputDto = new StudentInputDto();
+        studentInputDto.setId_persona("invalid_id");
+
+        when(personRepository.findById("invalid_id")).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.addStudent(studentInputDto);
+        });
+    }
+
+    @Test
+    public void testUpdateStudentThrowsEntityNotFoundException() {
+        StudentInputDto studentInputDto = new StudentInputDto();
+        studentInputDto.setId_persona("invalid_id");
+
+        when(personRepository.findById("invalid_id")).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.updateStundent(studentInputDto);
+        });
+    }
+
+    @Test
+    public void testAddStudentToAsignaturaThrowsStudentNotFoundException() {
+        String id_student = "invalid_student_id";
+        String id_asignatura = "valid_asignatura_id";
+
+        when(studentRepository.findById(id_student)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.addStudentToAsignatura(id_student, id_asignatura);
+        });
+    }
+
+    @Test
+    public void testAddStudentToAsignaturaThrowsAsignaturaNotFoundException() {
+        String id_student = "valid_student_id";
+        String id_asignatura = "invalid_asignatura_id";
+
+        Student student = new Student();
+        when(studentRepository.findById(id_student)).thenReturn(Optional.of(student));
+        when(asignaturaRepository.findById(id_asignatura)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.addStudentToAsignatura(id_student, id_asignatura);
+        });
+    }
+
+    @Test
+    public void testAsignarAsignaturasEstudianteThrowsStudentNotFoundException() {
+        String id_student = "invalid_student_id";
+        List<String> id_asignatura = new ArrayList<>(); // List of asignatura IDs
+
+        when(studentRepository.findById(id_student)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.asignarAsignaturasEstudiante(id_student, id_asignatura);
+        });
+    }
+
+    @Test
+    public void testDesasignarAsignaturasEstudianteThrowsStudentNotFoundException() {
+        String id_student = "invalid_student_id";
+        List<String> id_asignatura = new ArrayList<>(); // List of asignatura IDs
+
+        when(studentRepository.findById(id_student)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.desasignarAsignaturasEstudiante(id_student, id_asignatura);
+        });
+    }
+
+    @Test
+    public void testDevuelveAluSimpleThrowsStudentNotFoundException() {
+        String id = "invalid_student_id";
+        String parametro = "simple";
+
+        when(studentRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.devuelveAlu(id, parametro);
+        });
+    }
+
+    @Test
+    public void testDevuelveAluFullThrowsStudentNotFoundException() {
+        String id = "invalid_student_id";
+        String parametro = "full";
+
+        when(studentRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            studentService.devuelveAlu(id, parametro);
+        });
+    }
+
 
 
 }
