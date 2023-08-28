@@ -1,5 +1,6 @@
 package com.Bosonit.block7crudvalidation2.controller.dto.Person;
 
+import com.Bosonit.block7crudvalidation2.domain.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Date;
 public class PersonOutputDto {
 
     String id_persona;
-    String usuario;
+    String username;
     String password;
     String name;
     String surname;
@@ -23,4 +24,5 @@ public class PersonOutputDto {
     Date created_date;
     String imagen_url;
     Date termination_date;
+    Role role;
 }

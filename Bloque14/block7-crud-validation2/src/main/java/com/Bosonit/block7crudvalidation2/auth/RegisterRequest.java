@@ -1,19 +1,18 @@
-package com.Bosonit.block7crudvalidation2.controller.dto.Person;
+package com.Bosonit.block7crudvalidation2.auth;
 
-
-import com.Bosonit.block7crudvalidation2.domain.Role;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 
-public class PersonInputDto {
-
+public class RegisterRequest {
     String username;
     String password;
     String name;
@@ -25,5 +24,4 @@ public class PersonInputDto {
     Date created_date;
     String imagen_url;
     Date termination_date;
-    Role role;
 }

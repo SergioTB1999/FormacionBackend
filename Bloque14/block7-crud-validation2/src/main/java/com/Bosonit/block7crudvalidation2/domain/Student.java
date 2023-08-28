@@ -51,7 +51,7 @@ public class Student {
                 this.comments,
                 this.branch,
                 this.person.getId_persona(),
-                this.person.getUsuario(),
+                this.person.getUsername(),
                 this.person.getPassword(),
                 this.person.getName(),
                 this.person.getSurname(),

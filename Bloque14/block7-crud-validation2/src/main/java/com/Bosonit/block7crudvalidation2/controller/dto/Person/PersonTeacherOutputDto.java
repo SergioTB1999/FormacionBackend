@@ -13,7 +13,7 @@ import java.util.Date;
 public class PersonTeacherOutputDto {
 
     String id_persona;
-    String usuario;
+    String username;
     String password;
     String name;
     String surname;

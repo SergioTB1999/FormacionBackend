@@ -72,10 +72,10 @@ public class Controller {
         return personService.getAllPersons();
     }
 
-    @PutMapping()
+    /*@PutMapping()
     public ResponseEntity<PersonOutputDto> updatePerson(@RequestBody PersonInputDto personInputDto){
             return ResponseEntity.ok().body(personService.updatePerson(personInputDto));
-    }
+    }*/
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePerson(@PathVariable String id){

@@ -27,8 +27,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public PersonOutputDto addPerson(PersonInputDto person){
-        if (person.getUsuario() == null) throw new UnprocessableEntityException("Usuario no puede ser nulo");
-        if (person.getUsuario().length() > 10) throw new UnprocessableEntityException("Longitud de usuario no puede ser mayor a 10");
+        if (person.getUsername() == null) throw new UnprocessableEntityException("Usuario no puede ser nulo");
+        if (person.getUsername().length() > 10) throw new UnprocessableEntityException("Longitud de usuario no puede ser mayor a 10");
         return personRepository.save(new Person(person)).personToPersonOutputDto();
     }
 
@@ -56,7 +56,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
 
-    @Override
+   /* @Override
     public PersonOutputDto updatePerson(PersonInputDto personInputDto) {
         Person person = personRepository.findById(personInputDto.getId_persona()).orElseThrow(
                 () -> new EntityNotFoundException("No se encuentra la ID de la persona")
@@ -77,7 +77,7 @@ public class PersonServiceImpl implements PersonService {
         personRepository.save(person);
 
         return person.personToPersonOutputDto();
-    }
+    }*/
 
     @Override
     public void deletePersonById(String id) {

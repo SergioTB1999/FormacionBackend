@@ -5,25 +5,28 @@ import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonStudentOutputDto;
 import com.Bosonit.block7crudvalidation2.controller.dto.Person.PersonTeacherOutputDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Person {
+@Builder
+@Table(name = "persona", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+public class Person implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id_persona;
-    @Column(name = "Usuario", nullable = false)
-    String usuario;
+    @Column(nullable = false)
+    String username;
     String password;
     String name;
     String surname;
@@ -34,6 +37,8 @@ public class Person {
     Date created_date;
     String imagen_url;
     Date termination_date;
+    @Enumerated(EnumType.STRING)
+    Role role;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Student student;
@@ -44,7 +49,7 @@ public class Person {
 
 
     public Person(PersonInputDto personInputDto){
-        this.usuario = personInputDto.getUsuario();
+        this.username = personInputDto.getUsername();
         this.password = personInputDto.getPassword();
         this.name = personInputDto.getName();
         this.surname = personInputDto.getSurname();
@@ -55,12 +60,13 @@ public class Person {
         this.created_date = personInputDto.getCreated_date();
         this.imagen_url = personInputDto.getImagen_url();
         this.termination_date = personInputDto.getTermination_date();
+        this.role = personInputDto.getRole();
     }
 
     public PersonOutputDto personToPersonOutputDto(){
         return new PersonOutputDto(
                 this.id_persona,
-                this.usuario,
+                this.username,
                 this.password,
                 this.name,
                 this.surname,
@@ -70,14 +76,15 @@ public class Person {
                 this.activate,
                 this.created_date,
                 this.imagen_url,
-                this.termination_date
+                this.termination_date,
+                this.role
         );
     }
 
     public PersonStudentOutputDto personStudentToPersonStudentOutputDto(){
         return new PersonStudentOutputDto(
                 this.id_persona,
-                this.usuario,
+                this.username,
                 this.password,
                 this.name,
                 this.surname,
@@ -98,7 +105,7 @@ public class Person {
     public PersonTeacherOutputDto personTeacherToPersonTeacherOutputDto(){
         return new PersonTeacherOutputDto(
                 this.id_persona,
-                this.usuario,
+                this.username,
                 this.password,
                 this.name,
                 this.surname,
@@ -115,4 +122,33 @@ public class Person {
         );
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
