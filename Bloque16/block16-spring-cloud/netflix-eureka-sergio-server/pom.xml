@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bosonit</groupId>
-	<artifactId>trip_frontend</artifactId>
+	<artifactId>netflix-eureka-sergio-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>trip_frontend</name>
-	<description>Backend de viajes</description>
+	<name>netflix-eureka-sergio-server</name>
+	<description>eureka</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -25,12 +25,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-netflix-eureka-server</artifactId>
+			<version>3.1.4</version>
 		</dependency>
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<scope>runtime</scope>
+			</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -40,11 +44,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-netflix-eureka-server</artifactId>
-			<version>3.1.4</version>
 		</dependency>
 	</dependencies>
 

@@ -5,6 +5,7 @@ import com.bosonit.trip_backend.controller.dto.ClienteOutputDto;
 import com.bosonit.trip_backend.errors.CustomError;
 import com.bosonit.trip_backend.errors.EntityNotFoundException;
 import com.bosonit.trip_backend.errors.UnprocessableEntityException;
+import com.netflix.discovery.DiscoveryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
